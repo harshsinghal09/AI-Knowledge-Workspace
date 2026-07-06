@@ -8,7 +8,7 @@ from app.db.mongo import ensure_indexes
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await ensure_indexes()
+await ensure_indexes()
     yield
 
 
