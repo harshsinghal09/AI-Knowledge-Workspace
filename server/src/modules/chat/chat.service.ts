@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "crypto"
 import { ChatModel, ChatDocument } from "./chat.model";
 import { AppError } from "../../utils/AppError";
 import { hasReadyDocuments } from "../documents/document.service";
