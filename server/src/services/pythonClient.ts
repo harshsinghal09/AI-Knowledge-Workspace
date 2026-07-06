@@ -7,6 +7,7 @@ export interface IndexDocumentRequest {
   workspaceId: string;
   filePath: string;
   mimeType: string;
+  originalName: string;
 }
 
 export interface QueryRequest {
@@ -60,9 +61,9 @@ export async function triggerIndexing(req: IndexDocumentRequest): Promise<void> 
   try {
     await postJson<{ accepted: boolean }>("/index-document", req, 5000);
   } catch (err) {
-    // If we can't even reach the AI service, mark this synchronously so the
-    // frontend doesn't poll a document stuck in "processing" forever.
-    logger.error(`Failed to trigger indexing for document ${req.documentId}: ${(err as Error).message}`);
+    logger.error(
+      `Failed to trigger indexing for document ${req.documentId}: ${(err as Error).message}`
+    );
     throw err;
   }
 }
@@ -75,8 +76,13 @@ export async function checkPythonHealth(): Promise<boolean> {
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 3000);
-    const response = await fetch(`${env.pythonAiUrl}/health`, { signal: controller.signal as any });
+
+    const response = await fetch(`${env.pythonAiUrl}/health`, {
+      signal: controller.signal as any
+    });
+
     clearTimeout(timeout);
+
     return response.ok;
   } catch {
     return false;

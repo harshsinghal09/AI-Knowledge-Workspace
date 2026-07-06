@@ -11,6 +11,7 @@ class IndexDocumentRequest(BaseModel):
     workspaceId: str
     filePath: str
     mimeType: str
+    originalName: str
 
 
 @router.post("/index-document")
@@ -23,5 +24,6 @@ async def index_document_endpoint(payload: IndexDocumentRequest, background_task
         payload.workspaceId,
         payload.filePath,
         payload.mimeType,
+        payload.originalName,
     )
     return {"accepted": True}

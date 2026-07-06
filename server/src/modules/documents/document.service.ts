@@ -22,7 +22,8 @@ export async function createDocument(input: CreateDocumentInput): Promise<Docume
     documentId: doc.id,
     workspaceId: input.workspaceId,
     filePath: input.storedPath,
-    mimeType: input.mimeType
+    mimeType: input.mimeType,
+    originalName: input.originalName
   }).catch(async (err) => {
     logger.error(`Indexing trigger failed for ${doc.id}: ${err.message}`);
     await DocumentModel.findByIdAndUpdate(doc.id, {

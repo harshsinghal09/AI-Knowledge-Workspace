@@ -9,7 +9,13 @@ from app.services.chunking import chunk_pages
 from app.services.embeddings import embed_chunks
 
 
-async def index_document(document_id: str, workspace_id: str, file_path: str, mime_type: str) -> None:
+async def index_document(
+    document_id: str,
+    workspace_id: str,
+    file_path: str,
+    mime_type: str,
+    original_name: str,
+) -> None:
     """
     Runs as a background task. Node has already returned 202 to the client —
     this function's only job is to end with a callback to Node reporting
@@ -29,7 +35,7 @@ async def index_document(document_id: str, workspace_id: str, file_path: str, mi
         vectors = await embed_chunks(provider, [c.text for c in chunks])
 
         db = mongo_db.get_db()
-        filename = file_path.split("/")[-1]
+        filename = original_name
 
         docs_to_insert = [
             {
