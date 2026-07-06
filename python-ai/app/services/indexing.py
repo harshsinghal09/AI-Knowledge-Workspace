@@ -1,4 +1,5 @@
 import httpx
+import traceback
 
 from app.core.config import get_settings
 from app.db import mongo as mongo_db
@@ -52,7 +53,13 @@ async def index_document(document_id: str, workspace_id: str, file_path: str, mi
     except (UnsupportedFileTypeError, EmptyDocumentError) as e:
         await _report_status(document_id, "failed", str(e))
     except Exception as e:
-        await _report_status(document_id, "failed", f"Indexing failed: {e}")
+        traceback.print_exc()
+
+        await _report_status(
+            document_id,
+            "failed",
+            f"Indexing failed: {e}",
+        )
 
 
 async def _report_status(document_id: str, status: str, error_message: str | None) -> None:
