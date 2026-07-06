@@ -1,3 +1,4 @@
+import traceback
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
@@ -39,7 +40,12 @@ async def query_endpoint(payload: QueryRequest):
         chunks = await search_similar_chunks(payload.workspaceId, query_vector)
         answer = await generate_answer(provider, payload.question, chunks)
     except Exception as e:
-        raise HTTPException(status_code=502, detail=f"AI generation failed: {e}")
+        traceback.print_exc()
+
+        raise HTTPException(
+            status_code=502,
+            detail=f"AI generation failed: {e}",
+        )
 
     citations = [
         Citation(
