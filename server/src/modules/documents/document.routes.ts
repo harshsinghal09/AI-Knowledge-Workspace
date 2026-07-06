@@ -20,4 +20,4 @@ router.get("/", listHandler);
 router.get("/:id/status", statusHandler);
 router.delete("/:id", deleteHandler);
 
-export default router
+export default router;
