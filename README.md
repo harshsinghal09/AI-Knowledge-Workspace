@@ -319,6 +319,3 @@ NODE_CALLBACK_URL=
 
 ---
 
-# License
-
-MIT License
