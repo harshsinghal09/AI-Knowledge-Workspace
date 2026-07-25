@@ -21,4 +21,4 @@ def get_db() -> AsyncIOMotorDatabase:
 async def ensure_indexes() -> None:
     db = get_db()
     await db.document_chunks.create_index("documentId")
-    await db.document_chunks.create_index("workspaceId")
+
